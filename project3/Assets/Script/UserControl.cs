@@ -25,7 +25,10 @@ public class UserControl : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _gameManager = GameObject.FindObjectOfType<GameManager>();
-        publicvar.playerDead = false;
+
+        publicvar.playerDead = false;       // TODO: for game loop
+
+        transform.position = spawnPoint.transform.position;         // initial position
     }
 
     void FixedUpdate()
