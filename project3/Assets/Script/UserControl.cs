@@ -8,16 +8,23 @@ public class UserControl : MonoBehaviour
 
     public Transform spawnPoint;
 
-    public int speed = 3;
+    public float intialSpeed = 3f;
+    public float speed = 3f;
     public float xDirection;
     
-    public int jumpVal = 20;
+    // jump
+    public int jumpVal = 12;
     public int jumps = 1;
     public int maxJumps = 1;
     public bool grounded = false;
     public Transform playerBottom;
     public LayerMask platform;
     public bool jump = true;
+
+    // dash
+    public float dashSpeed = 8f;
+    public float dashDuration = 2f;
+    bool dashing;
 
     GameManager _gameManager;
 
@@ -29,6 +36,9 @@ public class UserControl : MonoBehaviour
         publicvar.playerDead = false;       // TODO: for game loop
 
         transform.position = spawnPoint.transform.position;         // initial position
+
+        // for dash
+        dashing = false;
     }
 
     void FixedUpdate()
@@ -49,29 +59,24 @@ public class UserControl : MonoBehaviour
         //{
         //    transform.localScale *= new Vector2(-1, 1);
         //}
-
-        // jump
-        //grounded = Physics2D.OverlapCircle(playerBottom.position, .2f, platform);
-        //print(grounded);
-   
-        //if (grounded && Input.GetButton("Jump"))
-        //{
-        //    print("Jump");
-        //    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-        //    _rigidbody.AddForce(new Vector2(0, jumpVal));
-        //}
-
         
+        // dash
+        if (dashing)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     void Update()
     {
+        // respawn
         if (_rigidbody.position.y < -6)
         {
             //transform.position = new Vector2(0, 0); 
             transform.position = spawnPoint.transform.position;
         }
 
+        // jump
         grounded = Physics2D.OverlapCircle(playerBottom.position, .2f, platform);
 
         if (grounded)
@@ -89,5 +94,19 @@ public class UserControl : MonoBehaviour
             _rigidbody.velocity = Vector2.up * jumpVal;
             jumps--;
         }
+
+        // dash
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            dashing = true;
+        }
+    }
+
+    IEnumerator Dash()
+    {
+        speed = dashSpeed;
+        yield return new WaitForSeconds(dashDuration);
+        speed = intialSpeed;
+        dashing = false;
     }
 }

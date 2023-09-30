@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 6983902825823819110}
   - component: {fileID: 3120562038387984029}
   - component: {fileID: 5444563366184693242}
-  - component: {fileID: 3362120631318255104}
+  - component: {fileID: 1318169593671714198}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -191,7 +191,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3362120631318255104
+--- !u!114 &1318169593671714198
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,14 +203,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d67fbeee1b17fc4b8b3f6f3157528df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 4800390905093572867, guid: 675885ce9b436cd4fa3b0be9b65cb0ad, type: 3}
+  intialSpeed: 3
   speed: 3
   xDirection: 0
-  jumpVal: 13
+  jumpVal: 12
   jumps: 1
   maxJumps: 1
-  grounded: 1
+  grounded: 0
   playerBottom: {fileID: 4624607330698859074}
   platform:
     serializedVersion: 2
     m_Bits: 8
   jump: 1
+  dashSpeed: 8
+  dashDuration: 2
