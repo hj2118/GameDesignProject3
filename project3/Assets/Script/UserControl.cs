@@ -11,7 +11,14 @@ public class UserControl : MonoBehaviour
     public float intialSpeed = 3f;
     public float speed = 3f;
     public float xDirection;
-    
+
+    // Wall Jump
+    public float wallJumpForce = 10f;
+    public LayerMask wallLayer;
+    public float wallJumpTime = 0.2f;
+    private float wallJumpTimeCounter;
+    private bool isWallJumping = false;
+
     // jump
     public int jumpVal = 12;
     public int jumps = 1;
@@ -100,6 +107,35 @@ public class UserControl : MonoBehaviour
         {
             dashing = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && !grounded && IsTouchingWall())
+        {
+            isWallJumping = true;
+            wallJumpTimeCounter = wallJumpTime;
+            _rigidbody.velocity = new Vector2(-xDirection * wallJumpForce, jumpVal);
+        }
+
+        if (isWallJumping && wallJumpTimeCounter > 0)
+        {
+            // Continue applying wall jump force for a short time
+            _rigidbody.velocity = new Vector2(-xDirection * wallJumpForce, _rigidbody.velocity.y);
+            wallJumpTimeCounter -= Time.deltaTime;
+        }
+        else
+        {
+            isWallJumping = false;
+        }
+
+    }
+
+    private bool IsTouchingWall()
+    {
+        float wallCheckDistance = 0.2f; // Adjust this as needed
+
+        // Cast rays to check if the player is touching a wall
+        RaycastHit2D hit = Physics2D.Raycast(playerBottom.position, Vector2.right * xDirection, wallCheckDistance, wallLayer);
+
+        return hit.collider != null;
     }
 
     IEnumerator Dash()
