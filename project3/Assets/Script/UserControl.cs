@@ -18,6 +18,9 @@ public class UserControl : MonoBehaviour
     public float wallJumpTime = 0.2f;
     private float wallJumpTimeCounter;
     private bool isWallJumping = false;
+    public bool isTouchingWall = false;
+    public Transform playerRight;
+    public Transform playerLeft;
 
     // jump
     public int jumpVal = 12;
@@ -72,6 +75,8 @@ public class UserControl : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+
+        checkTouchingWall();
     }
 
     void Update()
@@ -83,7 +88,7 @@ public class UserControl : MonoBehaviour
             transform.position = spawnPoint.transform.position;
         }
 
-        // jump
+        // jump & double jump
         grounded = Physics2D.OverlapCircle(playerBottom.position, .2f, platform);
 
         if (grounded)
@@ -96,7 +101,7 @@ public class UserControl : MonoBehaviour
             _rigidbody.velocity = Vector2.up * jumpVal;
         }
 
-        else if (Input.GetKeyDown(KeyCode.Space) && jumps > 0)
+        else if (Input.GetKeyDown(KeyCode.Space) && (jumps > 0) && !isTouchingWall)
         {
             _rigidbody.velocity = Vector2.up * jumpVal;
             jumps--;
@@ -108,7 +113,8 @@ public class UserControl : MonoBehaviour
             dashing = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !grounded && IsTouchingWall())
+        // wall jump
+        if (Input.GetKeyDown(KeyCode.Space) && !grounded && isTouchingWall)
         {
             isWallJumping = true;
             wallJumpTimeCounter = wallJumpTime;
@@ -128,14 +134,27 @@ public class UserControl : MonoBehaviour
 
     }
 
-    private bool IsTouchingWall()
+    public void checkTouchingWall()
     {
         float wallCheckDistance = 0.2f; // Adjust this as needed
 
         // Cast rays to check if the player is touching a wall
-        RaycastHit2D hit = Physics2D.Raycast(playerBottom.position, Vector2.right * xDirection, wallCheckDistance, wallLayer);
+        //RaycastHit2D hit1 = Physics2D.Raycast(playerRight.position, Vector2.right * xDirection, wallCheckDistance, wallLayer);
+        //RaycastHit2D hit2 = Physics2D.Raycast(playerLeft.position, Vector2.right * xDirection, wallCheckDistance, wallLayer);
+        
+        bool hit1 = Physics2D.OverlapCircle(playerRight.position, wallCheckDistance, wallLayer);
+        bool hit2 = Physics2D.OverlapCircle(playerLeft.position, wallCheckDistance, wallLayer);
 
-        return hit.collider != null;
+        //if ((hit1.collider != null) || (hit2.collider != null))
+        if (hit1 || hit2)
+        {
+            isTouchingWall = true;
+        }
+        else
+        {
+            isTouchingWall = false;
+        }
+        //return hit.collider != null;
     }
 
     IEnumerator Dash()

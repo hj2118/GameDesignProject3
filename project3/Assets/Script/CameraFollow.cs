@@ -22,8 +22,8 @@ public class CameraFollow : MonoBehaviour
             transform.position = smoothedPosition;
 
             // Debug log for position
-            Debug.Log("Desired Position: " + desiredPosition);
-            Debug.Log("Camera Position: " + transform.position);
+            //Debug.Log("Desired Position: " + desiredPosition);
+            //Debug.Log("Camera Position: " + transform.position);
         }
     }
 }
