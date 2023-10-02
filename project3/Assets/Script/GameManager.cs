@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public TextMeshProUGUI livesInterface;
     public TextMeshProUGUI timeInterface;
+    public TextMeshProUGUI bestTimeInterface;
+    public TextMeshProUGUI highestInterface;
 
     void Update()
     {
@@ -21,7 +23,6 @@ public class GameManager : MonoBehaviour
             }
 
             livesInterface.text = "Lives: " + publicvar.lives;
-            //timeInterface.text = "Time: " + Mathf.FloorToInt(publicvar.timePlayed / 60) + ":" + Mathf.FloorToInt(publicvar.timePlayed % 60);
             timeInterface.text = string.Format("Time: {0:00}:{1:00}", Mathf.FloorToInt(publicvar.timePlayed / 60), Mathf.FloorToInt(publicvar.timePlayed % 60));
         }
 
@@ -36,14 +37,23 @@ public class GameManager : MonoBehaviour
             }
 
             livesInterface.text = "Lives: " + publicvar.lives;
-            //timeInterface.text = "Time: " + Mathf.FloorToInt(publicvar.timePlayed / 60) + ":" + Mathf.FloorToInt(publicvar.timePlayed % 60);
             timeInterface.text = string.Format("Time: {0:00}:{1:00}", Mathf.FloorToInt(publicvar.timePlayed / 60), Mathf.FloorToInt(publicvar.timePlayed % 60));
         }
 
         else if (SceneManager.GetActiveScene().name == "WinScene")
         {
-            timeInterface.text = string.Format("Time: {0:00}:{1:00}", Mathf.FloorToInt(publicvar.timePlayed / 60), Mathf.FloorToInt(publicvar.timePlayed % 60));
-            //timeInterface.text = "Time: " + Mathf.FloorToInt(publicvar.timePlayed / 60) + ":" + Mathf.FloorToInt(publicvar.timePlayed % 60);
+            if ((publicvar.bestTime == 0) || (publicvar.bestTime >= publicvar.timePlayed))
+            {
+                publicvar.bestTime = publicvar.timePlayed;
+                highestInterface.text = "HIGHEST SCORE";
+            }
+            else
+            {
+                highestInterface.text = "GAME COMPLETE";
+            }
+
+            timeInterface.text = string.Format("Current: {0:00}:{1:00}", Mathf.FloorToInt(publicvar.timePlayed / 60), Mathf.FloorToInt(publicvar.timePlayed % 60));
+            bestTimeInterface.text = string.Format("Highest: {0:00}:{1:00}", Mathf.FloorToInt(publicvar.bestTime / 60), Mathf.FloorToInt(publicvar.bestTime % 60));
         }
 
         if (Input.GetKeyDown(KeyCode.Return))

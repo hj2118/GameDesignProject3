@@ -9,4 +9,5 @@ public class publicvar : MonoBehaviour
     public static int lives = 3;
     public static float timePlayed = 0;
     public static bool complete = false;
+    public static float bestTime = 0;
 }
