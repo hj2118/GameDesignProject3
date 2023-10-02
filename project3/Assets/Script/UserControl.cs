@@ -45,8 +45,8 @@ public class UserControl : MonoBehaviour
 
         _rigidbody = GetComponent<Rigidbody2D>();
 
-        publicvar.playerDead = false;       // TODO: for game loop
-
+        publicvar.playerDead = false;
+        spawnPoint.transform.position = new Vector2(0,0);
         transform.position = spawnPoint.transform.position;         // initial position
 
         // for dash
@@ -94,6 +94,7 @@ public class UserControl : MonoBehaviour
             }
             else
             {
+                spawnPoint.transform.position = new Vector2(0, 0);
                 publicvar.playerDead = true;
             }
         }
@@ -185,6 +186,12 @@ public class UserControl : MonoBehaviour
             //}
 
             publicvar.complete = true;
+        }
+
+        else if (other.CompareTag("CheckPoint"))
+        {
+            spawnPoint.transform.position = other.transform.position;
+            Destroy(other);
         }
     }
 }
