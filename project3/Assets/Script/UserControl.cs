@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UserControl : MonoBehaviour
 {
@@ -40,8 +41,9 @@ public class UserControl : MonoBehaviour
 
     void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
         _gameManager = GameObject.FindObjectOfType<GameManager>();
+
+        _rigidbody = GetComponent<Rigidbody2D>();
 
         publicvar.playerDead = false;       // TODO: for game loop
 
@@ -177,6 +179,11 @@ public class UserControl : MonoBehaviour
     {
         if (other.CompareTag("Goal"))
         {
+            //if (SceneManager.GetActiveScene().name == "GameScene")
+            //{
+            //    _gameManager.checkBestTime();
+            //}
+
             publicvar.complete = true;
         }
     }
