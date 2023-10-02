@@ -84,8 +84,16 @@ public class UserControl : MonoBehaviour
         // respawn
         if (_rigidbody.position.y < -6)
         {
-            //transform.position = new Vector2(0, 0); 
-            transform.position = spawnPoint.transform.position;
+            publicvar.lives--;
+
+            if (publicvar.lives > 0) {
+                //transform.position = new Vector2(0, 0); 
+                transform.position = spawnPoint.transform.position;
+            }
+            else
+            {
+                publicvar.playerDead = true;
+            }
         }
 
         // jump & double jump
@@ -163,5 +171,13 @@ public class UserControl : MonoBehaviour
         yield return new WaitForSeconds(dashDuration);
         speed = intialSpeed;
         dashing = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Goal"))
+        {
+            publicvar.complete = true;
+        }
     }
 }
