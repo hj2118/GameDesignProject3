@@ -45,8 +45,8 @@ public class UserControl : MonoBehaviour
 
         _rigidbody = GetComponent<Rigidbody2D>();
 
-        publicvar.playerDead = false;       // TODO: for game loop
-
+        publicvar.playerDead = false;
+        spawnPoint.transform.position = new Vector2(0,0);
         transform.position = spawnPoint.transform.position;         // initial position
 
         // for dash
@@ -64,14 +64,13 @@ public class UserControl : MonoBehaviour
         float horizontalMovement = Input.GetAxis("Horizontal") * speed;
         _rigidbody.velocity = new Vector2(horizontalMovement, _rigidbody.velocity.y);
 
-        // TODO: once we have a sprite for player
-        //xDirection = transform.localScale.x;
+        xDirection = transform.localScale.x;
 
-        //if (horizontalMovement < 0 && xDirection > 0 || horizontalMovement > 0 && xDirection < 1)
-        //{
-        //    transform.localScale *= new Vector2(-1, 1);
-        //}
-        
+        if (horizontalMovement < 0 && xDirection > 0 || horizontalMovement > 0 && xDirection < 0)
+        {
+            transform.localScale *= new Vector2(-1, 1);
+        }
+
         // dash
         if (dashing)
         {
@@ -94,6 +93,7 @@ public class UserControl : MonoBehaviour
             }
             else
             {
+                spawnPoint.transform.position = new Vector2(0, 0);
                 publicvar.playerDead = true;
             }
         }
@@ -185,6 +185,12 @@ public class UserControl : MonoBehaviour
             //}
 
             publicvar.complete = true;
+        }
+
+        else if (other.CompareTag("CheckPoint"))
+        {
+            spawnPoint.transform.position = other.transform.position;
+            Destroy(other);
         }
     }
 }
